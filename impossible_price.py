@@ -11,6 +11,5 @@ for i in money:
     if target < i:
         break
     target += i
-    print(target)
-
+    
 print(target)
