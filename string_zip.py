@@ -1,34 +1,34 @@
-import time
-st=time.time()
+from collections import deque
+import re
 
 def solution(s):
-    ref_result=[]
-    result=''
-    cnt=0
-    for i in range(1,len(s)//2 +1):
-        ref = s[:i]
-        #result.append(ref)
-        for j in range(i,len(s),i):
-            check = s[j:j+i]
-            #result+=check
-
+    leng = len(s)
+    answer = leng
+    for i in range(1,leng//2+1):
+        cut_list = re.sub('(\w{%i})' %i, '\g<1> ',s).split()
+        q=deque(cut_list)
+        result=''
+        ref = q.popleft()
+        num_cnt=1
+        
+        while q:
+            check = q.popleft()
             if ref == check:
-                cnt+=1
-                
+                num_cnt+=1
             else:
-                if cnt != 0:
-                    ref = check
-                    result+=str(cnt)
-                    cnt=0
+                if num_cnt !=1:
+                    result+=str(num_cnt)
+                    num_cnt=1
+                result+=ref
+                ref=check
+        if num_cnt !=1:
+            result+=str(num_cnt)
+        result+=ref
+
+        answer = min(answer,len(result))
                 
-                result += ref
-                ref = check
-                
-        ref_result.append(result)
-    answer = ref_result
+            
     return answer
 
 'aabbacc'
 print(solution('aabbacc'))
-et=time.time()
-print('time: ', et-st)
