@@ -29,7 +29,7 @@ def solution(key, lock):
                 else:
                     for k in range(m):
                         for l in range(m):
-                            new_lock[k+i][l+j] -= key[k][l]
+                            new_lock[k+i][l+j] -= ref_key[k][l]
                     
                     key = ref_key
                     
@@ -57,5 +57,3 @@ def rot_90(a):
         for j in range(m):
             result[j][n-i-1] = a[i][j]            
     return result
-    
-print(solution([[0, 0, 0], [1, 0, 0], [0, 1, 1]], [[1, 1, 1], [1, 1, 0], [1, 0, 1]]))
