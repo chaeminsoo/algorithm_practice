@@ -1,3 +1,5 @@
+from itertools import combinations
+
 n,m = map(int,input().split())
 
 city=[]
@@ -36,12 +38,12 @@ def ccd(houses,chickens):
         city_chicken_distance+=chicken_distance
     return city_chicken_distance
 
-if m >= len(chickens):
-    print(ccd(houses,chickens))
-else:
+if m < len(chickens):
     final_ccd = float('inf')
-    for i in range(len(chickens)+1-m):
-        new_chicks = chickens[i:m+i]
-        ref_final_ccd = ccd(houses,new_chicks)
+    new_chicks = combinations(chickens,m)
+    for i in new_chicks:
+        ref_final_ccd = ccd(houses,i)
         final_ccd = min(ref_final_ccd,final_ccd)
     print(final_ccd)
+else:
+    print(ccd(houses,chickens))
