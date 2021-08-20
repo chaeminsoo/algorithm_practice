@@ -1,48 +1,38 @@
-def count_w(wp,cw,ccw,all_weak):
-    c_weak=[]
-    cc_weak=[]
-    for i in range(wp,cw+1):
-        if i in all_weak:
-            c_weak.append(i)
-    for i in range(ccw,wp+1):
-        if i in all_weak:
-            cc_weak.append(i)
-            
-    if len(c_weak) >= len(cc_weak):
-        c_weak.sort()
-        return c_weak
-    else:
-        cc_weak.sort()
-        return cc_weak
-
-def check(weak,dist,all_weak,n):
+def check(dist,weak,all_weak):
     long_d = dist.pop()
-    ref_list = []
-    if long_d >= n:
-        return 'end'
-    
+    ref_list=[]
     for wp in weak:
+        chosen_wp =[]
         cw = wp + long_d
         ccw = wp - long_d
+        cw_list=[]
+        ccw_list=[]
+        for i in range(wp,cw+1):
+            if i in all_weak:
+                cw_list.append(i)
+        for i in range(ccw,wp+1):
+            if i in all_weak:
+                ccw_list.append(i)
         
-        ref = count_w(wp,cw,ccw,all_weak)
-        
-        if len(ref_list) < len(ref):
-            ref_list = ref
-        elif len(ref_list) == len(ref):
-            rl_value = ref_list[-1] - ref_list[0]
-            r_value = ref[-1] - ref[0]
-            if rl_value >= r_value:
-                ref_list = ref_list
+        if len(cw_list) >= len(ccw_list):
+            chosen_wp = cw_list
+        else:
+            chosen_wp = ccw_list
+        chosen_wp.sort()
+        if len(chosen_wp) > len(ref_list):
+            ref_list = chosen_wp
+        elif len(chosen_wp) == len(ref_list):
+            rf_f, rf_l = ref_list[0],ref_list[-1]
+            c_f,c_l = chosen_wp[0], chosen_wp[-1]
+            if (rf_l - rf_f) >= (c_l - c_f):
+                pass
             else:
-                ref_list = ref
-        else: continue
-    for i in ref_list:
-        weak.remove(i)
-    
+                ref_list = chosen_wp
+
+
+
 def solution(n, weak, dist):
     answer = 0
-    able = True
     dist.sort()
     past_weak = []
     next_weak=[]
@@ -51,16 +41,5 @@ def solution(n, weak, dist):
         next_weak.append(i+n)
     all_weak = past_weak + weak + next_weak
     
-    while weak:
-        check(weak,dist,all_weak,n)
-        answer +=1
-        if dist:
-            continue
-        else:
-            able = False
-            break
     
-    if able:
-        return answer
-    else:
-        return -1
+    return answer
