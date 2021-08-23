@@ -53,3 +53,4 @@ def solution(n, weak, dist):
             break
     answer = cnt        
     return answer
+    #github_test
