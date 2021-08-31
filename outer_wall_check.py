@@ -48,3 +48,5 @@ print(solution(12,[1, 3, 4, 9, 10],[1,3])) # 2 안나옴
 print(solution(12,[1, 3, 4, 9, 10],[1,1,1])) # 3
 print(solution(12,[1,2,5,6,9,10],[1,1,1])) # 3 안나옴
 print(solution(12,[1,2,4,5],[1,1])) # 1 안나옴
+
+print(solution(12,[1,2,3],[5])) # test
