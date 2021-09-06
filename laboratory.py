@@ -26,13 +26,13 @@ def virus_diffusion(field,viruses):
 
     for i in range(4):
         try:
-            new_v_r = virus[0] + dx[i]
-            new_v_c = virus[1] + dy[i]
-            if field[new_v_r][new_v_c] == 0:
+            new_v_r = virus[0] + dy[i]
+            new_v_c = virus[1] + dx[i]
+            if field[new_v_r][new_v_c] != 0:
+                continue
+            else:
                 field[new_v_r][new_v_c] = 2
                 viruses.append([new_v_r,new_v_c])
-            else:
-                continue
         except IndexError:
             continue
     virus_diffusion(field,viruses)
@@ -40,19 +40,28 @@ def virus_diffusion(field,viruses):
 result = 0
 new_walls = list(combinations(zeros,3))
 #---------------- repeat
-for case in new_walls:
-    cnt = 0
-    for k in case:
-        field[k[0]][k[1]] = 1
+# for case in new_walls:
+#     cnt = 0
+#     for k in case:
+#         field[k[0]][k[1]] = 1
     
-    # virus diffusion
-        virus_diffusion(field,viruses)
+#     # virus diffusion
+#     virus_diffusion(field,viruses)
 
-    # check safe-zone
-        for i in range(n):
-            for j in range(m):
-                if field[i][j] == 0:
-                    cnt+=1
-        result = max(result,cnt)
+#     # check safe-zone
+#     for i in range(n):
+#         for j in range(m):
+#             if field[i][j] == 0:
+#                 cnt+=1
+#     result = max(result,cnt)
 
-print(result) # fail reuslt = 0
+# print(result) # fail reuslt = 0
+
+
+case = new_walls[0]
+    
+for k in case:
+    field[k[0]][k[1]] = 1
+virus_diffusion(field,viruses)
+
+print(field)
