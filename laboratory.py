@@ -18,24 +18,28 @@ for i in range(n):
 dx = [-1,0,1,0]
 dy = [0,1,0,-1]
 
-def virus_diffusion(field,viruses):
+def virus_diffusion(field,viruses,dx,dy):
     try:
         virus = viruses.popleft()
     except IndexError:
         return
-
+    
     for i in range(4):
+        r = virus[0] + dy[i]
+        c = virus[1] + dx[i]
+
+        if r < 0 or c < 0 or r > n or c > m:
+            continue
         try:
-            new_v_r = virus[0] + dy[i]
-            new_v_c = virus[1] + dx[i]
-            if field[new_v_r][new_v_c] != 0:
-                continue
+            if field[r][c] == 0:
+                field[r][c] = 2
+                viruses.append([r,c])
             else:
-                field[new_v_r][new_v_c] = 2
-                viruses.append([new_v_r,new_v_c])
+                continue
         except IndexError:
             continue
-    virus_diffusion(field,viruses)
+    
+    virus_diffusion(field,viruses,dx,dy)
 
 result = 0
 new_walls = list(combinations(zeros,3))
@@ -45,23 +49,40 @@ new_walls = list(combinations(zeros,3))
 #     for k in case:
 #         field[k[0]][k[1]] = 1
     
-#     # virus diffusion
-#     virus_diffusion(field,viruses)
-
-#     # check safe-zone
-#     for i in range(n):
-#         for j in range(m):
-#             if field[i][j] == 0:
-#                 cnt+=1
-#     result = max(result,cnt)
-
-# print(result) # fail reuslt = 0
-
-
-case = new_walls[0]
+    # virus diffusion
+    # virus_diffusion(field,viruses,dx,dy)
     
-for k in case:
-    field[k[0]][k[1]] = 1
-virus_diffusion(field,viruses)
+    # check safe-zone
+    # for i in range(n):
+    #     for j in range(m):
+    #         if field[i][j] == 0:
+    #             cnt+=1
+    # result = max(result,cnt)
+
+# print(new_walls) # fail reuslt = 0
+#----------------------------------------------------------
+while new_walls:
+    case = new_walls.pop()
+    cnt = 0
+    for location in case:
+        field[location[0]][location[1]] = 1
+    
+    virus_diffusion(field,viruses,dx,dy)
+
+    for i in range(n):
+        for j in range(m):
+            if field[i][j] == 0:
+                cnt +=1
+    
+    result = max(result,cnt)
+    break
 
 print(field)
+print(result)
+
+#----------------------------------------------------------
+if ([0,1],[1,0],[3,4]) in new_walls:
+    print(1)
+else:
+    print(0)
+#-------------------------------------------
