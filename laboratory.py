@@ -1,3 +1,4 @@
+import copy
 from collections import deque
 from itertools import combinations
 
@@ -14,6 +15,7 @@ for i in range(n):
         elif row[j] == 2:
             viruses.append([i,j])
     field.append(row)
+
 # 4-way
 dx = [-1,0,1,0]
 dy = [0,1,0,-1]
@@ -49,40 +51,41 @@ new_walls = list(combinations(zeros,3))
 #     for k in case:
 #         field[k[0]][k[1]] = 1
     
-    # virus diffusion
-    # virus_diffusion(field,viruses,dx,dy)
+#     virus_diffusion(field,viruses,dx,dy)
     
-    # check safe-zone
-    # for i in range(n):
-    #     for j in range(m):
-    #         if field[i][j] == 0:
-    #             cnt+=1
-    # result = max(result,cnt)
+#     for i in range(n):
+#         for j in range(m):
+#             if field[i][j] == 0:
+#                 cnt+=1
+    
+#     result = max(result,cnt)
 
-# print(new_walls) # fail reuslt = 0
+# print(result) # fail reuslt = 0
 #----------------------------------------------------------
-while new_walls:
-    case = new_walls.pop()
+def solution(new_walls,field,viruses,dx,dy):
+    ref_field = copy.deepcopy(field)
     cnt = 0
-    for location in case:
-        field[location[0]][location[1]] = 1
-    
-    virus_diffusion(field,viruses,dx,dy)
+    case = new_walls.pop()
 
+    for k in case:
+        ref_field[k[0]][k[1]] = 1
+    
+    virus_diffusion(ref_field,viruses,dx,dy)
+    
     for i in range(n):
         for j in range(m):
-            if field[i][j] == 0:
-                cnt +=1
+            if ref_field[i][j] == 0:
+                cnt+=1
     
-    result = max(result,cnt)
-    break
+    return cnt
 
-print(field)
+while new_walls:
+    result = max(result,solution(new_walls,field,viruses,dx,dy))
+# print(solution(new_walls,field,viruses,dx,dy))
+# print(field)
 print(result)
+#-------------------------------------------------------
 
-#----------------------------------------------------------
-if ([0,1],[1,0],[3,4]) in new_walls:
-    print(1)
-else:
-    print(0)
-#-------------------------------------------
+# virus_diffusion(field,viruses,dx,dy)
+
+# print(field)
