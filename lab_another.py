@@ -46,24 +46,16 @@ def virus_diffusion(field,viruses,dx,dy):
 result = 0
 new_walls = list(combinations(zeros,3))
 
-def solution(new_walls,field,viruses,dx,dy):
-    ref_field = copy.deepcopy(field)
+for case in new_walls:
     cnt = 0
-    case = new_walls.pop()
+    for wall in case:
+        field[wall[0]][wall[1]] = 1
+    
+    virus_diffusion(field,viruses,dx,dy)
 
-    for k in case:
-        ref_field[k[0]][k[1]] = 1
-    
-    virus_diffusion(ref_field,viruses,dx,dy)
-    
     for i in range(n):
         for j in range(m):
-            if ref_field[i][j] == 0:
-                cnt+=1
-    
-    return cnt
-
-while new_walls:
-#     result = max(result,solution(new_walls,field,viruses,dx,dy))
-    print(solution(new_walls,field,viruses,dx,dy))
-# print(result)
+            if field[i][j] == 0:
+                cnt +=1
+    result = max(result,cnt)
+    # 1 case complete
