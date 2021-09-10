@@ -15,16 +15,17 @@ for i in range(n):
         elif row[j] == 2:
             viruses.append([i,j])
     field.append(row)
+num_zero = len(zeros)
 
 # 4-way
 dx = [-1,0,1,0]
 dy = [0,1,0,-1]
 
-def virus_diffusion(field,viruses,dx,dy):
+def virus_diffusion(field,viruses,dx,dy,zeros):
     try:
         virus = viruses.popleft()
     except IndexError:
-        return
+        return 
     
     for i in range(4):
         r = virus[0] + dy[i]
@@ -34,28 +35,27 @@ def virus_diffusion(field,viruses,dx,dy):
             continue
         try:
             if field[r][c] == 0:
-                field[r][c] = 2
+                try:
+                    zeros.remove([r,c])
+                except ValueError:
+                    pass
                 viruses.append([r,c])
             else:
                 continue
         except IndexError:
             continue
     
-    virus_diffusion(field,viruses,dx,dy)
+    virus_diffusion(field,viruses,dx,dy,zeros)
 
 result = 0
 new_walls = list(combinations(zeros,3))
 
 for case in new_walls:
-    cnt = 0
     for wall in case:
         field[wall[0]][wall[1]] = 1
     
-    virus_diffusion(field,viruses,dx,dy)
-
-    for i in range(n):
-        for j in range(m):
-            if field[i][j] == 0:
-                cnt +=1
-    result = max(result,cnt)
-    # 1 case complete
+    virus_diffusion(field,viruses,dx,dy,zeros)
+    
+    result = max(result,len(zeros))
+    
+print(result)
