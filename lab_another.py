@@ -16,12 +16,13 @@ for i in range(n):
             viruses.append([i,j])
     field.append(row)
 num_zero = len(zeros)
+ref_field = copy.deepcopy(field)
 
 # 4-way
 dx = [-1,0,1,0]
 dy = [0,1,0,-1]
 
-def virus_diffusion(field,viruses,dx,dy,zeros):
+def virus_diffusion(field,viruses,dx,dy):
     try:
         virus = viruses.popleft()
     except IndexError:
@@ -35,27 +36,44 @@ def virus_diffusion(field,viruses,dx,dy,zeros):
             continue
         try:
             if field[r][c] == 0:
-                try:
-                    zeros.remove([r,c])
-                except ValueError:
-                    pass
+                field[r][c] = 2
                 viruses.append([r,c])
             else:
                 continue
         except IndexError:
             continue
     
-    virus_diffusion(field,viruses,dx,dy,zeros)
+    virus_diffusion(field,viruses,dx,dy)
 
+def check(field):
+    cnt = 0
+    for i in range(n):
+        for j in range(m):
+            if field[i][j] == 0:
+                cnt +=1
+    return cnt
+
+def reset(field):
+    field = ref_field[:]
+    return field
+
+all_cases = list(combinations(zeros,3))
 result = 0
-new_walls = list(combinations(zeros,3))
-
-for case in new_walls:
+cnt = 0
+for case in all_cases:
     for wall in case:
         field[wall[0]][wall[1]] = 1
-    
-    virus_diffusion(field,viruses,dx,dy,zeros)
-    
-    result = max(result,len(zeros))
-    
+    print(field)    
+    virus_diffusion(field,viruses,dx,dy)
+    print(field)    
+
+    result = max(result,check(field))
+
+    field = reset(field)
+    print(field)
+    cnt+=1
+    if cnt == 2:
+        break
+    # break    
+
 print(result)
