@@ -12,10 +12,10 @@ for i in range(n):
 
 s, x, y = map(int,input().split())
 
+new_virus=[]
 
 def diffusion(r,c,v):
-    global n, field
-    new_virus=[]
+    global n, field, new_virus
     dr = [-1,1,0,0]
     dc = [0,0,-1,1]
 
@@ -26,5 +26,18 @@ def diffusion(r,c,v):
         if new_r >= 0 and new_r < n and new_c >= 0 and new_c < n:
             if field[new_r][new_c] == 0:
                 field[new_r][new_c] = v
-                # new_virus.append([new_r,new_c])
+                new_virus.append([new_r,new_c])
 
+time = 0
+while time < s:
+    for cnt in range(1,k+1):
+        while virus[cnt]:
+            r,c = virus[cnt].pop()
+
+            diffusion(r,c,cnt)
+
+        virus[cnt] = new_virus[:]
+        new_virus.clear()
+    time +=1
+
+print(field[x-1][y-1])
