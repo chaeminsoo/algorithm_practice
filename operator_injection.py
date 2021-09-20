@@ -4,36 +4,31 @@ from itertools import permutations
 n = int(input())
 series = deque(map(int,input().split()))
 ops = list(map(int,input().split()))
+signs = ['+','-','*','/']
 
 operators = []
-for i in range(len(ops)):
-    if i == 0:
-        ops.append('+')
-    elif i == 1:
-        ops.append('-')
-    elif i == 2:
-        ops.append('*')
-    elif i == 3:
-        ops.append('/')
+
+for i in range(4):
+    gen = [signs[i] for _ in range(ops[i])]
+    for j in gen:
+        operators.append(j)
 
 all_case = list(permutations(operators,len(operators)))
 
-def calcul(a,b,operators):
-    op = operators.popleft()
-
-    if op == '+':
-        return a + b
-    elif op == '-':
-        return a - b
-    elif op == '*':
-        return a * b
-    elif op == '/':
-        if a < 0:
-            return -((-a)//b)
-        else:
-            return a // b
-
-for case in all_case:
-    a = series[0]
-    b = series[1]
-    result = calcul(a,b,case[0])
+result = 0
+def check(series, case):
+    global result
+    a = series[i]
+    b = series[i+1]
+    op = case.pop()
+    ref = 
+    for i in range(len(series)):
+    
+        if op == '+':
+            result += (a + b)
+        elif op == '-':
+            result += (a - b)
+        elif op == '*':
+            result += (a * b)
+        elif op == '/':
+            result += (a // b)
