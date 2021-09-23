@@ -15,6 +15,7 @@ def calcul(now,cnt):
 
     for i in range(4):
         if ops[i] != 0:
+            
             ops[i] -= 1
 
             if i == 0:
