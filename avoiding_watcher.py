@@ -12,13 +12,3 @@ for _ in range(n):
 
 stop_num = (blanks*(blanks-1)*(blanks-2))/6
 
-def check():
-    result = False
-    a
-    return result
-
-def set_obj(field):
-    if check:
-        return
-
-print(blanks)
