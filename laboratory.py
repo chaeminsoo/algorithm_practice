@@ -1,69 +1,56 @@
-import copy
-from collections import deque
 from itertools import combinations
 
 n,m = map(int,input().split())
 
 field = []
-zeros=[]
-viruses = deque()
+zeros = []
 for i in range(n):
     row = list(map(int,input().split()))
-    for j in range(len(row)):
-        if row[j] == 0:
+    for j in row:
+        if j == 0:
             zeros.append([i,j])
-        elif row[j] == 2:
-            viruses.append([i,j])
     field.append(row)
 
-# 4-way
-dx = [-1,0,1,0]
-dy = [0,1,0,-1]
+standard_field = field[:]
+lz = len(zeros)
 
-def virus_diffusion(field,viruses,dx,dy):
-    try:
-        virus = viruses.popleft()
-    except IndexError:
-        return
-    
-    for i in range(4):
-        r = virus[0] + dy[i]
-        c = virus[1] + dx[i]
+dx = [0,0,-1,1]
+dy = [1,-1,0,0]
+cnt = 0
 
-        if r < 0 or c < 0 or r > n or c > m:
-            continue
-        try:
-            if field[r][c] == 0:
-                field[r][c] = 2
-                viruses.append([r,c])
-            else:
-                continue
-        except IndexError:
-            continue
-    
-    virus_diffusion(field,viruses,dx,dy)
+def virus_diffusion(x,y):
+    global dx, dy, field,cnt
+
+    if field[x][y] == 2:
+        for i in range(4):
+            r = x + dy[i]
+            c = y + dx[i]
+
+            if r >= 0 and r < n and c >= 0 and c < m:
+                if field[r][c] == 0:
+                    field[r][c] = 2
+                    cnt += 1
 
 result = 0
 new_walls = list(combinations(zeros,3))
 
-def solution(new_walls,field,viruses,dx,dy):
-    ref_field = copy.deepcopy(field)
-    cnt = 0
+def solution(new_walls,field):
+    global result
     case = new_walls.pop()
 
     for k in case:
-        ref_field[k[0]][k[1]] = 1
-    
-    virus_diffusion(ref_field,viruses,dx,dy)
+        field[k[0]][k[1]] = 1
     
     for i in range(n):
         for j in range(m):
-            if ref_field[i][j] == 0:
-                cnt+=1
+            virus_diffusion(i,j)
     
-    return cnt
+    result = max(result,lz - cnt)
 
 while new_walls:
-#     result = max(result,solution(new_walls,field,viruses,dx,dy))
-    print(solution(new_walls,field,viruses,dx,dy))
-# print(result)
+    solution(new_walls,field)
+
+    field = standard_field[:]
+    cnt = 0
+
+print(result)
