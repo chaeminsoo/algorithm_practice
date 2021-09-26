@@ -4,53 +4,67 @@ n,m = map(int,input().split())
 
 field = []
 zeros = []
+viruses = []
+
 for i in range(n):
     row = list(map(int,input().split()))
     for j in row:
         if j == 0:
             zeros.append([i,j])
+        if j == 2:
+            viruses.append([i,j])
     field.append(row)
 
 standard_field = field[:]
-lz = len(zeros)
+standard_viruses = viruses[:]
 
 dx = [0,0,-1,1]
 dy = [1,-1,0,0]
-cnt = 0
 
-def virus_diffusion(x,y):
-    global dx, dy, field,cnt
+def virus_diffusion(viruses):
+    global dx, dy, field
 
-    if field[x][y] == 2:
-        for i in range(4):
-            r = x + dy[i]
-            c = y + dx[i]
+    try:
+        virus = viruses.pop()    
+    except IndexError:
+        return
 
-            if r >= 0 and r < n and c >= 0 and c < m:
-                if field[r][c] == 0:
-                    field[r][c] = 2
-                    cnt += 1
+    vr = virus[0]
+    vc = virus[1]
+    
+    for i in range(4):
+        r = vr + dy[i]
+        c = vc + dx[i]
+
+        if r >= 0 and r < n and c >= 0 and c < m:
+            if field[r][c] == 0:
+                field[r][c] = 2
+                viruses.append([r,c])
+    virus_diffusion(viruses)
 
 result = 0
 new_walls = list(combinations(zeros,3))
 
-def solution(new_walls,field):
-    global result
+def solution():
+    global field
+    cnt = 0
+    for i in range(n):
+        for j in range(m):
+            if field[i][j] == 0:
+                cnt += 1
+    return cnt
+
+while new_walls:
     case = new_walls.pop()
 
     for k in case:
         field[k[0]][k[1]] = 1
+        
+    virus_diffusion(viruses)
     
-    for i in range(n):
-        for j in range(m):
-            virus_diffusion(i,j)
-    
-    result = max(result,lz - cnt)
-
-while new_walls:
-    solution(new_walls,field)
+    result = max(result,solution())
 
     field = standard_field[:]
-    cnt = 0
+    viruses = standard_viruses[:]
 
 print(result)
