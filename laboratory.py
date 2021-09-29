@@ -10,8 +10,8 @@ def fast_copy(list):
 
 for i in range(n):
     row = list(map(int,input().split()))
-    for j in row:
-        if j == 0:
+    for j in range(m):
+        if row[j] == 0:
             zeros.append([i,j])
     field.append(row)
 
@@ -34,27 +34,26 @@ def virus_diffusion(x,y):
 result = 0
 new_walls = list(combinations(zeros,3))
 
-# def solution(field):
-#     cnt = 0
-#     for i in range(n):
-#         for j in range(m):
-#             if field[i][j] == 0:
-#                 cnt += 1
-#     return cnt
+def solution(field):
+    cnt = 0
+    for i in range(n):
+        for j in range(m):
+            if field[i][j] == 0:
+                cnt += 1
+    return cnt
 
-# while new_walls:
-#     case = new_walls.pop()
+while new_walls:
+    case = new_walls.pop()
 
-#     for k in case:
-#         field[k[0]][k[1]] = 1
+    for k in case:
+        field[k[0]][k[1]] = 1
 
-#     for i in range(n):
-#         for j in range(m):
-#             virus_diffusion(i,j)
+    for i in range(n):
+        for j in range(m):
+            virus_diffusion(i,j)
 
-#     result = max(result,solution(field))
-#     print(result)
+    result = max(result,solution(field))
 
-#     field = fast_copy(standard_field)
+    field = fast_copy(standard_field)
 
 print(result)
