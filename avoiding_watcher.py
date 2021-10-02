@@ -23,6 +23,7 @@ dr = [-1,1,0,0]
 dc = [0,0,-1,1]
 
 def check(teacher):
+    global dr,dc,field,n
     result = False
     mul = 1
     unable = [0,0,0,0]
@@ -43,6 +44,8 @@ def check(teacher):
                 return result
             elif field[nr][nc] == 'O' or field[nr][nc] == 'T' or nr < 0 and nr >= n and nc < 0 and nc >= n:
                 unable[i] = 1
+            else:
+                continue
         mul +=1
     
     return result
