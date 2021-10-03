@@ -21,34 +21,33 @@ standard_field = [i[:] for i in field]
 
 dr = [-1,1,0,0]
 dc = [0,0,-1,1]
-
 def check(teacher):
-    global dr,dc,field,n
-    result = False
-    mul = 1
-    unable = [0,0,0,0]
+    global dr,dc,field,n,unable,answer,mul
     
+    if unable == [1,1,1,1]:
+        return
+
     r=teacher[0]
     c=teacher[1]
     
-    while unable == [1,1,1,1]:
-        for i in range(4):
-            if unable[i] == 1:
-                continue
+    for i in range(4):
 
-            nr = r + (dr[i]*mul)
-            nc = c + (dc[i]*mul)
+        nr = r + (dr[i]*mul)
+        nc = c + (dc[i]*mul)
 
+        try:
             if field[nr][nc] == 'S':
-                result = True
-                return result
-            elif field[nr][nc] == 'O' or field[nr][nc] == 'T' or nr < 0 and nr >= n and nc < 0 and nc >= n:
+                answer = True
+                return
+            elif field[nr][nc] == 'O' or field[nr][nc] == 'T':
                 unable[i] = 1
-            else:
-                continue
-        mul +=1
+        except IndexError:
+            unable[i] = 1
+    mul +=1
+    check(teacher)
     
-    return result
+unable = [0,0,0,0]
+mul = 1
 
 obj_cases = list(combinations(blanks,3))
 
@@ -59,8 +58,8 @@ while obj_cases:
         field[i[0]][i[1]] = 'O'
 
     for teacher in teachers:
-        if check(teacher):
-            answer = True
+        check(teacher)
+        if answer == True:
             break
     
     if answer:
