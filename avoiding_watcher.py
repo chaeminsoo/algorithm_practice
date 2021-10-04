@@ -3,6 +3,7 @@ from itertools import combinations
 n = int(input())
 
 answer = False
+result = False
 
 field =[]
 blanks = []
@@ -22,22 +23,24 @@ standard_field = [i[:] for i in field]
 dr = [-1,1,0,0]
 dc = [0,0,-1,1]
 def check(teacher):
-    global dr,dc,field,n,unable,answer,mul
+    global dr,dc,field,n,unable,result,mul
     
     if unable == [1,1,1,1]:
         return
-
+        
     r=teacher[0]
     c=teacher[1]
     
     for i in range(4):
+        if unable[i] == 1:
+            continue
 
         nr = r + (dr[i]*mul)
         nc = c + (dc[i]*mul)
 
         try:
             if field[nr][nc] == 'S':
-                answer = True
+                result = True
                 return
             elif field[nr][nc] == 'O' or field[nr][nc] == 'T':
                 unable[i] = 1
@@ -50,24 +53,40 @@ unable = [0,0,0,0]
 mul = 1
 
 obj_cases = list(combinations(blanks,3))
+# case_num = len(obj_cases)
+# cnt = 0
 
-while obj_cases:
-    case = obj_cases.pop()
+# while obj_cases:
+#     case = obj_cases.pop()
 
-    for i in case:
-        field[i[0]][i[1]] = 'O'
+#     for i in case:
+#         field[i[0]][i[1]] = 'O'
 
-    for teacher in teachers:
-        check(teacher)
-        if answer == True:
-            break
+#     for teacher in teachers:
+#         check(teacher)
+#         if result:
+#             break
+#         mul = 1
+#         unable = [0,0,0,0]
     
-    if answer:
-        break
-    else:
-        field  = [i[:] for i in standard_field]
+#     if result:
+#         mul = 1
+#         unable = [0,0,0,0]
+#         field  = [i[:] for i in standard_field]
+#         result = False
+#     else:
+#         answer = True
+#         break
     
-if answer:
-    print('NO')
+# if answer:
+#     print('YES')
+# else:
+#     print('NO')
+
+t = teachers[0]
+print(t)
+check(t)
+if result:
+    print('yes')
 else:
-    print('YES')
+    print('no')
