@@ -38,14 +38,16 @@ def check(teacher):
         nr = r + (dr[i]*mul)
         nc = c + (dc[i]*mul)
 
-        try:
-            if field[nr][nc] == 'S':
-                result = True
-                return
-            elif field[nr][nc] == 'O' or field[nr][nc] == 'T':
-                unable[i] = 1
-        except IndexError:
+        if nr < 0 or nr >= n or nc < 0 or nc >= n:
             unable[i] = 1
+            continue
+        
+        if field[nr][nc] == 'S':
+            result = True
+            return
+        elif field[nr][nc] == 'O' or field[nr][nc] == 'T':
+            unable[i] = 1
+        
     mul +=1
     check(teacher)
     
@@ -53,40 +55,32 @@ unable = [0,0,0,0]
 mul = 1
 
 obj_cases = list(combinations(blanks,3))
-# case_num = len(obj_cases)
-# cnt = 0
+case_num = len(obj_cases)
+cnt = 0
 
-# while obj_cases:
-#     case = obj_cases.pop()
+while obj_cases:
+    case = obj_cases.pop()
 
-#     for i in case:
-#         field[i[0]][i[1]] = 'O'
+    for i in case:
+        field[i[0]][i[1]] = 'O'
 
-#     for teacher in teachers:
-#         check(teacher)
-#         if result:
-#             break
-#         mul = 1
-#         unable = [0,0,0,0]
+    for teacher in teachers:
+        check(teacher)
+        if result:
+            break
+        mul = 1
+        unable = [0,0,0,0]
     
-#     if result:
-#         mul = 1
-#         unable = [0,0,0,0]
-#         field  = [i[:] for i in standard_field]
-#         result = False
-#     else:
-#         answer = True
-#         break
+    if result:
+        mul = 1
+        unable = [0,0,0,0]
+        field  = [i[:] for i in standard_field]
+        result = False
+    else:
+        answer = True
+        break
     
-# if answer:
-#     print('YES')
-# else:
-#     print('NO')
-
-t = teachers[0]
-print(t)
-check(t)
-if result:
-    print('yes')
+if answer:
+    print('YES')
 else:
-    print('no')
+    print('NO')
