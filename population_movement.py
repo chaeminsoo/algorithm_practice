@@ -7,6 +7,24 @@ for i in range(n):
 
 dr=[-1,1,0,0]
 dc=[0,0,-1,1]
+check = True
 
-def check():
+def union():
+    check = False
+    return 
 
+def move():
+    return
+
+result = 0
+
+while check == False:
+    for i in range(n):
+        for j in range(n):
+            union(i,j)
+
+    move()
+
+    result+=1
+
+print(result)
