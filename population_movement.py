@@ -10,6 +10,8 @@ visit = [[0]*n for _ in range(n)]
 def fast_copy(list):
     return [i[:] for i in list]
 
+standard_v = fast_copy(visit)
+
 def give_not_visit(visit):
     for i in range(n):
         for j in range(n):
@@ -53,25 +55,39 @@ def move(unions):
         x,y = unions[i]
         hab += A[x][y]
     
-    val = hab//lu
+    if hab !=0:
+        val = hab//lu
 
-    while unions:
-        w,z = unions.pop()
-        A[w][z] = val
+        while unions:
+            w,z = unions.pop()
+            A[w][z] = val
     return
 
 def gou():
+    global unions,group_of_un,stack
+
     coordinate = give_not_visit(visit)
     if coordinate == None:
         return
     stack.append(coordinate)
     union(stack)
+    group_of_un.append(unions)
+    unions=[]
+    gou()
 
 result = 0
 
 while True:
+    now_a = fast_copy(A)
     gou()
 
+    for i in group_of_un:
+        move(i)
     
+    if A == now_a:
+        break
+
+    result+=1
+    visit = fast_copy(standard_v)
 
 print(result)
