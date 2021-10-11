@@ -31,8 +31,6 @@ def union(stack):
         r,c = stack.pop()
         unions.append([r,c])
     except IndexError:
-        group_of_un.append(unions)
-        unions = []
         return
 
     visit[r][c] = 1
@@ -63,31 +61,30 @@ def move(unions):
             A[w][z] = val
     return
 
-def gou():
-    global unions,group_of_un,stack
-
-    coordinate = give_not_visit(visit)
-    if coordinate == None:
-        return
-    stack.append(coordinate)
-    union(stack)
-    group_of_un.append(unions)
-    unions=[]
-    gou()
-
 result = 0
+ref_a = []
+switch = True
+ref_a = fast_copy(A)
+while switch:
+    while True:
+        coordinate = give_not_visit(visit)
+        if coordinate == None:
+            break
+        stack.append(coordinate)
+        union(stack)
+        group_of_un.append(unions)
+        unions=[]
 
-while True:
-    now_a = fast_copy(A)
-    gou()
+    for uns in group_of_un:
+        move(uns)
 
-    for i in group_of_un:
-        move(i)
-    
-    if A == now_a:
-        break
+    if ref_a == A:
+        switch = False
+    else:
+        ref_a = fast_copy(A)
 
     result+=1
     visit = fast_copy(standard_v)
+    group_of_un = []
 
 print(result)
