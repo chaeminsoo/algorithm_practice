@@ -25,8 +25,8 @@ dr=[-1,1,0,0]
 dc=[0,0,-1,1]
 check = True
 
-def union(stack):
-    global visit,unions,group_of_un
+def union():
+    global visit,unions,group_of_un,stack
     try:
         r,c = stack.pop()
         unions.append([r,c])
@@ -34,31 +34,33 @@ def union(stack):
         return
 
     visit[r][c] = 1
-
+    standard = A[r][c]
+    print(standard,'8888888888')
     for i in range(4):
         nr = r + dr[i]
         nc = c + dc[i]
-
         if nr >= 0 and nr < n and nc >= 0 and nc <n:
-            if abs(A[r][c] - A[nr][nc]) >= l and abs(A[r][c] - A[nr][nc]) <= r:
+            print(A[nr][nc],'555555555555')
+            print(abs(standard - A[nr][nc]),'44444444444444')
+            if abs(standard - A[nr][nc]) >= l and abs(standard - A[nr][nc]) <= r:
                 stack.append([nr,nc])
-
-    union(stack)
+    union()
 
 def move(unions):
     global A
     hab = 0
     lu = len(unions)
-    for i in range(lu):
-        x,y = unions[i]
-        hab += A[x][y]
-    
-    if hab !=0:
+    if lu !=0:
+        for i in range(lu):
+            x,y = unions[i]
+            hab += A[x][y]
+        
         val = hab//lu
 
         while unions:
             w,z = unions.pop()
             A[w][z] = val
+    
     return
 
 result = 0
@@ -71,12 +73,15 @@ while switch:
         if coordinate == None:
             break
         stack.append(coordinate)
-        union(stack)
+        union()
+        print(unions)
         group_of_un.append(unions)
         unions=[]
+    print(group_of_un)
 
     for uns in group_of_un:
         move(uns)
+    print(A)
 
     if ref_a == A:
         switch = False
