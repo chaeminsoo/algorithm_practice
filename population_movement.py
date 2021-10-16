@@ -1,9 +1,8 @@
 n,l,r = map(int,input().split())
 
 A=[]
-for i in range(n):
-    row = list(map(int,input().split()))
-    A.append(row)
+for _ in range(n):
+    A.append(list(map(int,input().split())))
 
 visit = [[0]*n for _ in range(n)]
 
@@ -25,8 +24,8 @@ dr=[-1,1,0,0]
 dc=[0,0,-1,1]
 check = True
 
-def union():
-    global visit,unions,group_of_un,stack
+def union(stack):
+    global visit,unions,group_of_un
     try:
         r,c = stack.pop()
         unions.append([r,c])
@@ -44,7 +43,7 @@ def union():
             print(abs(standard - A[nr][nc]),'44444444444444')
             if abs(standard - A[nr][nc]) >= l and abs(standard - A[nr][nc]) <= r:
                 stack.append([nr,nc])
-    union()
+    union(stack)
 
 def move(unions):
     global A
@@ -73,7 +72,7 @@ while switch:
         if coordinate == None:
             break
         stack.append(coordinate)
-        union()
+        union(stack)
         print(unions)
         group_of_un.append(unions)
         unions=[]
