@@ -7,8 +7,6 @@ for _ in range(n):
     nations.append(list(map(int,input().split())))
 
 visit = [[0]*n for _ in range(n)]
-# standard_v = [i[:] for i in visit]
-
 stack=[]
 
 dr = [-1,1,0,0]
@@ -17,10 +15,12 @@ dc = [0,0,-1,1]
 def make_un(stack):
     union=[]
     total_sum = 0
+    num_union = 0
     while stack:
         coordinate = stack.pop()
         
         union.append(coordinate)
+        num_union += 1
         r,c = coordinate
         visit[r][c] = 1
 
@@ -39,16 +39,15 @@ def make_un(stack):
                     if visit[nr][nc] != 1:
                         stack.append([nr,nc])
                         visit[nr][nc] = 1
+    union.append(num_union)
     union.append(total_sum)
     return union
     
 def move(gou):
     for uns in gou:
         total = uns.pop()
-        len_uns = len(uns)
+        len_uns = uns.pop()
 
-        # for con in uns:
-        #     total += nations[con[0]][con[1]]
         res = total // len_uns
 
         for con in uns:
@@ -68,6 +67,5 @@ while True:
 
     cnt +=1
     visit = [[0]*n for _ in range(n)]
-    # visit = [i[:] for i in standard_v]#fast_copy(standard_v)
-
+    
 print(cnt)
