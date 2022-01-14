@@ -1,4 +1,3 @@
-from math import trunc
 import random
 import time
 
@@ -87,9 +86,9 @@ target = people[num]
 
 while True:
     user.print()
-    time.sleep(0.5)
+    # time.sleep(0.5)
     target.print()
-    time.sleep(0.5)
+    # time.sleep(0.5)
     print('1 일반공격, 2 크리티컬 공격, 3 회복')
     num = int(input()) -1
     user.action_user(num)
