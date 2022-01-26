@@ -1,10 +1,10 @@
 n = int(input())
-schedule = [()]
+schedule = [0]
 pay_check = [0]
 for i in range(n):
     t,p = map(int,input().split())
     pay_check.append(p)
-    schedule.append((i+1,t))
+    schedule.append(t)
 
 next_schedule = [[] for _ in range(n+1)]
 before_schedule = [[] for _ in range(n+1)]
@@ -12,11 +12,11 @@ before_schedule = [[] for _ in range(n+1)]
 def checking(day):
     date,t = day
     for i in range(date+t,n+1):
-        if schedule[i][0]+schedule[i][1] <= n:
+        if schedule[i]+i <= n+1:
             next_schedule[date].append(i)
 
-for i in schedule[1:]:
-    checking(i)
+for i in range(1,len(schedule)):
+    checking((i,schedule[i]))
 
 for j in range(len(next_schedule)):
     if next_schedule[j]:
@@ -36,10 +36,7 @@ def paying(day):
 
 for l in range(1,n+1):
     pay_check[l]+=paying(l)
-    if l + schedule[l][1] >n+1:
+    if l + schedule[l] >n+1:
         pay_check[l]*=0
 
-print(pay_check)
-print(schedule)
-print(next_schedule)
-print(before_schedule)
+print(max(pay_check))
