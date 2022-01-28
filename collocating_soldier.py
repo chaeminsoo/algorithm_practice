@@ -1,20 +1,12 @@
-import sys
-sys.setrecursionlimit(3000)
-
 n = int(input())
-power = list(map(int,input().split()))
+soldier = list(map(int,input().split()))
 lds = [1]*(n)
 
-def find_lds(idx):
-    if idx <0:
-        return max(lds)
+for idx in range(n-2,-1,-1):
     ref = [1]
-    if power[idx] >= power[idx+1]:        
-        for i in range(idx+1,n):
+    for i in range(idx+1,n):
+        if soldier[idx] > soldier[i]:
             ref.append(lds[i]+1)
-
     lds[idx] = max(ref)
-    idx -= 1
-    return find_lds(idx)
 
-print(n-find_lds(n-2))
+print(n-max(lds))
