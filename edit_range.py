@@ -10,4 +10,4 @@ for i in range(len(a)-1,-1,-1):
         else:
             dp[i][j] = max(dp[i+1][j],dp[i][j+1])
 
-print(len(b)-dp[0][0])
+print(max(len(a),len(b))-dp[0][0])
