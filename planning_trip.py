@@ -1,7 +1,3 @@
-from multiprocessing import parent_process
-from re import A
-
-
 n,m = map(int,input().split())
 location=[]
 for _ in range(n):
