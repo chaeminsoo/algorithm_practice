@@ -1,13 +1,16 @@
 n = int(input())
-planet = []
-for _ in range(n):
+planet_x = []
+planet_y = []
+planet_z = []
+for i in range(n):
     x,y,z = map(int,input().split())
-    planet.append((x,y,z))
+    planet_x.append((x,i))
+    planet_y.append((y,i))
+    planet_z.append((z,i))
 
-def cost(a,b):
-    a1,a2,a3 = a
-    b1,b2,b3 = b
-    return min(abs(a1-b1),abs(a2-b2),abs(a3-b3))
+planet_x.sort()
+planet_y.sort()
+planet_z.sort()
 
 def find_parent(parent,x):
     if parent[x] != x:
@@ -29,11 +32,10 @@ for i in range(n):
 
 ternals = []
 
-for i in range(len(planet)):
-    for j in range(len(planet)):
-        if i == j:
-            continue
-        ternals.append((cost(planet[i],planet[j]),i,j))
+for dists in planet_x,planet_y,planet_z:
+    for j in range(1,len(dists)):
+        new_dist = abs(dists[j-1][0]-dists[j][0])
+        ternals.append((new_dist,dists[j-1][1],dists[j][1]))
 
 ternals.sort()
 total_money = 0
