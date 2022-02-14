@@ -2,11 +2,10 @@ from collections import deque
 
 n = int(input())
 fish = []
-for _ in range(n):
+for i in range(n):
     fish.append(list(map(int,input().split())))
 
-def moving(fish,shark,target,lv):
-    x,y = target
+def moving(fish,shark):
     moving_field = [[0]*n for _ in range(n)]
     dr = [-1,1,0,0]
     dc = [0,0,-1,1]
@@ -21,53 +20,42 @@ def moving(fish,shark,target,lv):
             nc = c + dc[i]
 
             if nr >=0 and nr < n and nc >= 0 and nc < n:
-                if fish[nr][nc] <= lv:
+                if fish[nr][nc] <= lv and moving_field[nr][nc] == 0:
                     q.append((nr,nc))
-                    if moving_field[nr][nc] == 0:
-                        moving_field[nr][nc] = v+1
-                    else:
-                        moving_field[nr][nc] = min(v+1,moving_field[nr][nc])
-    return moving_field[x][y]
+                    moving_field[nr][nc] = v+1
+    return moving_field
 
-def find_fish(fish,lv,shark):
-    ref_dist = 1000
-    r = c = 30
+def find_fish(moving_field):
+    ref = []
     for i in range(n):
         for j in range(n):
-            if fish[i][j] != 0 and fish[i][j] < lv:
-                dist = moving(fish,shark,(i,j),lv)
-                if ref_dist > dist:
-                    ref_dist = dist
-                    r = i
-                    c = j
-    if r != 30:
-        return (r,c),ref_dist
-    else:
-        return False,0
+            if moving_field[i][j] != 0 and fish[i][j] < lv and fish[i][j] != 0:
+                ref.append((moving_field[i][j],i,j))
+    ref.sort(reverse=True, key= lambda x:(x[0],x[1],x[2]))
+    try:
+        return ref.pop()
+    except IndexError:
+        return False
 
 for i in range(n):
     for j in range(n):
         if fish[i][j] == 9:
             fish[i][j] = 0
-            break
-shark = (i,j)
+            shark = (i,j)
 
 fish_cnt = 0
 lv = 2
 time_take = 0
-target,dist = find_fish(fish,lv,shark)
-
-while target:
-    time_take += dist
-    r,c = target
-    fish[r][c] = 0
-    shark = target
+status = find_fish(moving(fish,shark))
+while status:
+    t,x,y = status
+    time_take += t
+    fish[x][y] = 0
+    shark = (x,y)
     fish_cnt += 1
-
     if fish_cnt == lv:
         lv += 1
         fish_cnt = 0
-
-    target,dist = find_fish(fish,lv,shark)
+    status = find_fish(moving(fish,shark))
 
 print(time_take)
