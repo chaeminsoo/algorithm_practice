@@ -14,166 +14,40 @@ field = [[0]*4 for _ in range(4)]
 
 for i in range(4):
     for j in range(4):
-        field[i][j] = (fishes[i][j], direction[i][j])
+        field[i][j] = [fishes[i][j], direction[i][j]]
 
-def moving(d,r,c):
-    if d == 1:
-        if r-1 >= 0 and field[r-1][c] != 's':
-            ref = field[r-1][c]
-            field[r-1][c] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif d == 2:
-        if r-1 >= 0 and c-1 >= 0 and field[r-1][c-1] != 's':
-            ref = field[r-1][c-1]
-            field[r-1][c-1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif d == 3:
-        if c-1 >= 0 and field[r][c-1] != 's':
-            ref = field[r][c-1]
-            field[r][c-1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif d == 4:
-        if r+1 < 4 and c-1 >= 0 and field[r+1][c-1] != 's':
-            ref = field[r+1][c-1]
-            field[r+1][c-1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif d == 5:
-        if r+1 < 4 and field[r+1][c] != 's':
-            ref = field[r+1][c]
-            field[r+1][c] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif d == 6:
-        if r+1 < 4 and c+1 < 4 and field[r+1][c+1] != 's':
-            ref = field[r+1][c+1]
-            field[r+1][c+1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif d == 7:
-        if c+1 < 4 and field[r][c+1] != 's':
-            ref = field[r][c+1]
-            field[r][c+1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif d == 8:
-        if r-1 >=0 and c+1 < 4 and field[r-1][c+1] != 's':
-            ref = field[r-1][c+1]
-            field[r-1][c+1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
+dr = [-1,-1,0,1,1,1,0,-1]
+dc = [0,-1,-1,-1,0,1,1,1]
 
+def turn(n):
+    a = n+1
+    if a < 9: return a
+    else: return 1
 
 def fish_move():
-    order = []
+    heap = []
     for i in range(4):
         for j in range(4):
-            heapq.heappush(order,(field[i][j][0],(i,j)))
-
-    while order:
-        r,c = heapq.heappop(order)[1]
-        d = field[r][c][1]
-        moving(d,r,c)
+            if field[i][j] != 's':
+                heapq.heappush(heap, (field[i][j][0],(i,j)))
     
-s_d = 0    
-def shark_move(shark):
-    r,c = shark
-    if s_d == 1:
-        if r-1 >= 0:
-            ref = field[r-1][c]
-            field[r-1][c] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif s_d == 2:
-        if r-1 >= 0 and c-1 >= 0:
-            ref = field[r-1][c-1]
-            field[r-1][c-1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif s_d == 3:
-        if c-1 >= 0:
-            ref = field[r][c-1]
-            field[r][c-1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif s_d == 4:
-        if r+1 < 4 and c-1 >= 0:
-            ref = field[r+1][c-1]
-            field[r+1][c-1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif s_d == 5:
-        if r+1 < 4:
-            ref = field[r+1][c]
-            field[r+1][c] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif s_d == 6:
-        if r+1 < 4 and c+1 < 4:
-            ref = field[r+1][c+1]
-            field[r+1][c+1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif s_d == 7:
-        if c+1 < 4:
-            ref = field[r][c+1]
-            field[r][c+1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
-    elif s_d == 8:
-        if r-1 >=0 and c+1 < 4:
-            ref = field[r-1][c+1]
-            field[r-1][c+1] = field[r][c]
-            field[r][c] = ref
-        else:
-            d+=1
-            if d >8: d = 1
-            return moving(d,r,c)
+    while heap:
+        r,c = heapq.heappop(heap)[1]
+        # field[r][c][1] = direction
+        ok = True
+        while ok:
+            if (r+dr[field[r][c][1]-1]) >=0 and (r+dr[field[r][c][1]-1]) < 4 and (c+dc[field[r][c][1]-1]) >= 0 and (c+dc[field[r][c][1]-1]) <4 and field[r+dr[field[r][c][1]-1]][c+dc[field[r][c][1]-1]] != 's':
+                ref = field[r+dr[field[r][c][1]-1]][c+dc[field[r][c][1]-1]]
+                field[r+dr[field[r][c][1]-1]][c+dc[field[r][c][1]-1]] = field[r][c]
+                field[r][c] = ref
+                ok = False
+            else:
+                field[r][c][1] = turn(field[r][c][1])
+        break
+def shark_move():
+    return
+
+field[0][0] = 's'
+fish_move()
+for i in field:
+    print(i)
