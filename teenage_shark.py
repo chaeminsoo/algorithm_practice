@@ -1,53 +1,37 @@
-import heapq
-
-fishes = [[0]*4 for _ in range(4)]
-direction = [[0]*4 for _ in range(4)]
-for i in range(4):
-    fish = list(map(int,input().split()))
-    for j in range(len(fish)):
-        if j%2 == 0:
-            fishes[i][j//2] = fish[j]
-        else:
-            direction[i][j//2] = fish[j]
-
 field = [[0]*4 for _ in range(4)]
 
 for i in range(4):
+    data  = list(map(int,input().split()))
     for j in range(4):
-        field[i][j] = [fishes[i][j], direction[i][j]]
+        field[i][j] = [data[j*2],data[j*2+1]-1]
 
 dr = [-1,-1,0,1,1,1,0,-1]
 dc = [0,-1,-1,-1,0,1,1,1]
 
-def turn(n):
-    a = n+1
-    if a < 9: return a
-    else: return 1
+def turn(direction):
+    return (direction+1)%8
 
-def fish_move():
-    heap = []
+def find_fish(n):
     for i in range(4):
         for j in range(4):
-            if field[i][j] != 's':
-                heapq.heappush(heap, (field[i][j][0],(i,j)))
-    
-    while heap:
-        r,c = heapq.heappop(heap)[1]
-        # field[r][c][1] = direction
-        ok = True
-        while ok:
-            if (r+dr[field[r][c][1]-1]) >=0 and (r+dr[field[r][c][1]-1]) < 4 and (c+dc[field[r][c][1]-1]) >= 0 and (c+dc[field[r][c][1]-1]) <4 and field[r+dr[field[r][c][1]-1]][c+dc[field[r][c][1]-1]] != 's':
-                ref = field[r+dr[field[r][c][1]-1]][c+dc[field[r][c][1]-1]]
-                field[r+dr[field[r][c][1]-1]][c+dc[field[r][c][1]-1]] = field[r][c]
-                field[r][c] = ref
-                ok = False
-            else:
-                field[r][c][1] = turn(field[r][c][1])
-        break
-def shark_move():
-    return
+            if field[i][j][0] == n:
+                return (i,j)
+    return None
 
-field[0][0] = 's'
-fish_move()
-for i in field:
-    print(i)
+def fish_move(s_r,s_c):
+    for i in range(1,17):
+        coordinate = find_fish(i)
+
+        if coordinate != None:
+            r,c = coordinate[0],coordinate[1]
+            d = field[r][c][1]
+
+            for _ in range(8):
+                nr = r + dr[d]
+                nc = c + dc[d]
+                if nr >=0 and nr < 4 and nc >= 0 and nc < 4 and not (nr == s_r and nc == s_c):
+                    field[r][c][1] = d
+                    field[r][c], field[nr][nc] = field[nr][nc], field[r][c]
+                    break
+                d = turn(d)
+
