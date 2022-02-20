@@ -35,3 +35,6 @@ def fish_move(s_r,s_c):
                     break
                 d = turn(d)
 
+def get_fish(s_r,s_c):
+    coordinates = []
+    direction = 
