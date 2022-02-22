@@ -94,7 +94,7 @@ def remove_smell():
                 smell_field[i][j][1] -= 1
                 if smell_field[i][j][1] == 0:
                     smell_field[i][j] = 0
-                    
+
 time_cnt = 0
 spray_smell(shark_where)
 while time_cnt < 1000:
@@ -104,7 +104,6 @@ while time_cnt < 1000:
     time_cnt += 1
     if shark_cnt(shark_where) == 1:
         break
-
 if shark_cnt(shark_where) != 1:
     print(-1)
 else:
