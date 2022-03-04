@@ -1,7 +1,7 @@
 n = int(input())
 due_data = list(map(int,input().split()))
 plan_data = list(map(int,input().split()))
-#--------------------------------------------------
+#-------------------------------------------------
 gifty = []
 for i in range(n):
     gifty.append([plan_data[i],due_data[i]])
@@ -19,21 +19,26 @@ for gift in gifty:
     if plan != section:
         section = plan
         pre_section_max = max(ref)
+        print('====',pre_section_max)
         ref.clear()
-        while due < section:
-            due += 30
-            cnt+=1
-        while due < pre_section_max:
-            due += 30
-            cnt+=1
+        if due < section:
+            share = (section-due)//30
+            due += (share+1)*30
+            cnt+=(share)
+        if due < pre_section_max:
+            share = (pre_section_max-due)//30
+            due += (share+1)*30
+            cnt+=(share)
         ref.append(due)
     else:
-        while due < section:
-            due += 30
-            cnt+=1
-        while due < pre_section_max:
-            due += 30
-            cnt+=1
+        if due < section:
+            share = (section-due)//30
+            due += (share+1)*30
+            cnt+=(share)
+        if due < pre_section_max:
+            share = (pre_section_max-due)//30
+            due += (share+1)*30
+            cnt+=(share)
         ref.append(due)
 
 print(cnt)
