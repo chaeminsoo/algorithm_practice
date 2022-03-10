@@ -1,6 +1,7 @@
-#1781
 import heapq
+import sys
 
+input = sys.stdin.readline
 n = int(input())
 data = []
 for _ in range(n):
@@ -9,11 +10,16 @@ for _ in range(n):
 
 data.sort()
 heap = []
+heap_len = 0
+ans = 0
 for i in data:
     deadline, nudle = i
     
     heapq.heappush(heap,nudle)
-    if deadline < len(heap):
-        heapq.heappop(heap)
-    print(heap)
-print(sum(heap))
+    ans += nudle
+    heap_len += 1
+    if deadline < heap_len:
+        ref = heapq.heappop(heap)
+        ans -= ref
+        heap_len -= 1
+print(ans)
