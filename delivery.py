@@ -8,4 +8,21 @@ for _ in range(m):
 
 cnt = 0
 car = [0]*(n+1)
+storage = 0
 
+for i in range(1,n+1):
+    cnt += car[i]
+    storage -= car[i]
+
+    vil[i].sort()
+    for vv in vil[i]:
+        v_num, v_load = vv[0], vv[1]
+        if storage+v_load <= c:
+            storage += v_load
+            car[v_num] +=v_load
+        else:
+            car[v_num] += c-storage
+            storage = c
+            break
+        
+print(cnt)
