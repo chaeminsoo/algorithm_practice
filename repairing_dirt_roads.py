@@ -3,9 +3,20 @@ from multiprocessing import pool
 
 
 n, l = map(int,input().split())
-pool_ = []
+pools_ = []
 for _ in range(n):
     st,ed = map(int,input().split())
-    pool_.append((st,ed))
-pool_.sort()
-print(pool_)
+    pools_.append((st,ed))
+pools_.sort()
+
+cursor_ = pools_[0][0]
+cnt = 0
+for pool_ in pools_:
+    pool_st,pool_ed = pool_
+
+    if cursor_ >= pool_st and cursor_ <= pool_ed:
+        while cursor_ >= pool_ed:
+            cursor_ += l
+            cnt += 1
+    else:
+        cursor_ = 
