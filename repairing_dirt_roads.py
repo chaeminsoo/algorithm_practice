@@ -1,6 +1,5 @@
 #1911
-from multiprocessing import pool
-
+import math
 
 n, l = map(int,input().split())
 pools_ = []
@@ -11,12 +10,11 @@ pools_.sort()
 
 cursor_ = pools_[0][0]
 cnt = 0
-for pool_ in pools_:
-    pool_st,pool_ed = pool_
-
-    if cursor_ >= pool_st and cursor_ <= pool_ed:
-        while cursor_ >= pool_ed:
-            cursor_ += l
-            cnt += 1
-    else:
-        cursor_ = 
+for pool_st, pool_ed in pools_:
+    if cursor_ < pool_st:
+        cursor_ = pool_st
+    while cursor_ < pool_ed:
+        ref = math.ceil((pool_ed - cursor_)/l)
+        cursor_ += ref*l
+        cnt += ref
+print(cnt)
