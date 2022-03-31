@@ -9,6 +9,8 @@ else:
     interval_list = []
     for i in range(n-1):
         interval_list.append(sensor_[i+1]-sensor_[i])
-    print(interval_list)
-    interval_list.sort()
-    print(sum(interval_list[:-(k-1)]))
+    if k == 1:
+        print(sum(interval_list))
+    else:
+        interval_list.sort()
+        print(sum(interval_list[:-(k-1)]))
