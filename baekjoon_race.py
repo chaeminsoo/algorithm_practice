@@ -6,31 +6,29 @@ ref_location = list(map(int,input().split()))
 
 def bi_search(list_,interval_):
     cnt = 1
-    st = list_[0]
-    ed = list_[-1]
-    ref = st
-    while ref < ed:
-        ref += interval_
-        if cnt >= m:
-            break
-        if bisect_left(list_,ref) < k:
+    ref = list_[0]
+    for i in range(1,len(list_)):
+        if list_[i] >= ref + interval_:
             cnt += 1
+            ref += interval_
+        else:
             continue
     if cnt >= m:
+        print('===',cnt)
         return True
     else:
         return False
 
-start_interval = 0
-end_interval = n
-mid_interval = (start_interval+end_interval)//2
+st = 0
+ed = n
+mid = (st+ed)//2
 
-while True:
-    if mid_interval == start_interval or mid_interval == end_interval:
-        break
-    if bi_search(ref_location,mid_interval) == True:
-        mid_interval = (mid_interval+end_interval)//2
-    elif bi_search(ref_location,mid_interval) == False:
-        mid_interval = (mid_interval+start_interval)//2
-
-print(mid_interval)
+while st != mid:
+    if bi_search(ref_location,mid):
+        st = mid
+        mid = (st+ed)//2
+    else:
+        ed = mid
+        mid = (st+ed)//2
+        
+print(mid)
