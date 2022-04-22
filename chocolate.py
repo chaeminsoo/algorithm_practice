@@ -10,7 +10,6 @@ def find_n(kk):
 n,a = find_n(k)
 b_k = format(k,'b')
 lenbn = len(b_k)
-print('==',b_k)
 ans = a
 for i in range(lenbn-1,-1,-1):
     check_ = b_k[i]
