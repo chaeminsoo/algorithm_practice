@@ -7,7 +7,7 @@ for _ in range(n):
     total += w
     meat.append([w,c])
 
-meat.sort(key=lambda x: -x[1])
+meat.sort(key=lambda x: (-x[1], -x[0]))
 ans = 0
 
 pre_cost = -1
