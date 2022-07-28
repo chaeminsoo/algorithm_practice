@@ -1,31 +1,26 @@
+# 1201
 n,m,k = map(int,input().split())
-ref = []
-ans = ''
-for i in range(1,n+1):
-    ref.append(str(i))
-cursor_ = 0
+series_ = []
+for i in range(n):
+    series_.append(i+1)
 
-def unit(ref,cur):
-    ref1 = ref[cur]
-    ref2 = ref[cur+1]
-    ref3 = ref1+ref2
-    del ref[cur]
-    ref[cur] = ref3
-    return
-
-if n >= m+k-1:
-    if n > m*k:
-        print(-1)
-    else:
-        while len(ref) > m:
-            if len(ref[cursor_]) < k:
-                unit(ref,cursor_)
+if m+k-1 <= n <= m*k:
+    ans = []
+    new_s = [series_[i:i+k] for i in range(0,n,k)]
+    while len(new_s) != m:
+        for i in range(-1,-n,-1):
+            if len(new_s[i]) == 1:
+                continue
             else:
-                cursor_ += 1
-        for i in ref:
-            j = i[::-1]
-            ans+=j
-        for k in ans:
-            print(k,end=' ')
+                ref = new_s.pop(i)
+                new_s.append(ref[:-1])
+                new_s.append(ref[-1:])
+                new_s.sort()
+                break
+    for i in new_s:
+        i.reverse()
+        ans.extend(i)
+    for i in ans:
+        print(i,end=' ')
 else:
     print(-1)
